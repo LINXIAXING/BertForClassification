@@ -1,0 +1,12 @@
+accelerate==0.21.0
+deepspeed==0.9.5
+easydict==1.10
+evaluate==0.4.0
+objprint==0.2.2
+onnxruntime==1.15.1
+optimum==1.9.1
+pandas==2.0.3
+PyYAML==6.0
+PyYAML==6.0
+torch==2.0.1
+transformers==4.30.2

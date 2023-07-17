@@ -1,0 +1,34 @@
+trainer:
+  log_root: './logs'
+  check_point: './check_point'
+  epochs: 200
+  restore_train: True
+  # accelerator
+  mixed_precision: 'no'
+  gradient_accumulation_steps: 1
+  opt:
+    lr: 0.00002
+    weight_decay: 0.05
+  scheduler:
+    T_0: 1
+    T_mult: 2
+
+dataset:
+  paths:
+    - './Dataset/neg.csv'
+    - './Dataset/neutral.csv'
+    - './Dataset/pos.csv'
+  labels:
+    - 'negative'
+    - 'neutral'
+    - 'positive'
+  train_ratio: 0.8
+  batch_size: 28
+
+model:
+  out_channel: 3
+  dropout: 0.1
+
+other:
+  save_pt: "./save/pt"
+  save_onnx: "./save/onnx"
