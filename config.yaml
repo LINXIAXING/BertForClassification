@@ -1,0 +1,41 @@
+trainer:
+  describe: "bert"
+  seed: 23
+  log_exclude_message: "TensorBoard"
+  check_point: './checkpoint'
+  epochs: 200
+  # evaluate every eval_step epochs
+  eval_step: 1
+  # when the last save_all_epoch was false, the restore_train of this time will not work
+  restore_train: True
+  save_all_epoch: True
+  # accelerator
+  mixed_precision: 'no'
+  gradient_accumulation_steps: 1
+  model:
+    # local path of model or hugging face pretrain_model name
+    pretrain_model: "./pretrain_checkpoint/clip" # "IDEA-CCNL/Taiyi-CLIP-RoBERTa-326M-ViT-H-Chinese" and "bert-base-chinese"
+    out_channel: 3
+    dropout: 0.1
+  dataset:
+    paths:
+      - './dataset/neg.csv'
+      - './dataset/neutral.csv'
+      - './dataset/pos.csv'
+    labels:
+      - 'negative'
+      - 'neutral'
+      - 'positive'
+    train_ratio: 0.8
+    batch_size: 12
+  optim:
+    lr: 0.00002
+    weight_decay: 0.05
+  scheduler:
+    T_0: 1
+    T_mult: 2
+
+
+other:
+  save_pt: "./save/pt"
+  save_onnx: "./save/onnx"
