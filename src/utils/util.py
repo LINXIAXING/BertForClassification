@@ -19,9 +19,8 @@ class MetricSaver(torch.nn.Module):
         self.best_acc = torch.nn.Parameter(torch.zeros(1), requires_grad=False)
 
 
-def resume_train_state(path: str, train_loader: torch.utils.data.DataLoader,
-                       val_loader: torch.utils.data.DataLoader,
-                       logger: logging.Logger, accelerator: accelerate.Accelerator):
+def resume_train_state(accelerator: accelerate.Accelerator, path: str, train_loader: torch.utils.data.DataLoader,
+                       val_loader: torch.utils.data.DataLoader, logger: logging.Logger, ):
     try:
         # Get the most recent checkpoint
         base_path = os.getcwd() + '/' + path
@@ -45,7 +44,9 @@ def resume_train_state(path: str, train_loader: torch.utils.data.DataLoader,
         return 0, 0, 0
 
 
-def get_check_point_path(root: str, describe: str, restore_train: bool):
+def get_checkpoint_path(root: str, describe: str, restore_train: bool) -> (str, bool):
+    is_new = True
+
     if not os.path.isdir(root):
         check_point_root = os.path.join(root, f"{describe}_v1")
     else:
@@ -53,7 +54,24 @@ def get_check_point_path(root: str, describe: str, restore_train: bool):
         if restore_train and len(folders) > 0:
             folders.sort(key=lambda x: x.split("_v")[-1])
             check_point_root = folders[-1]
+            is_new = False
         else:
             train_id = max([int(x.split("_v")[-1]) for x in folders] + [0])
             check_point_root = os.path.join(root, f"{describe}_v{train_id + 1}")
-    return check_point_root
+    return check_point_root, is_new
+
+
+def get_newest_checkpoint_path(root: str, describe: str) -> str:
+    folders = [os.path.join(root, d) for d in os.listdir(root) if describe == "_v".join(d.split("_v")[:-1])]
+    if len(folders) > 0:
+        folders.sort(key=lambda x: x.split("_v")[-1])
+        return folders[-1]
+    else:
+        return ""
+
+
+def build_folder(*args):
+    path = os.path.join(*args)
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    return path

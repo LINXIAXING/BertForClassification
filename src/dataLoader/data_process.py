@@ -73,10 +73,10 @@ def build_dataloader(paths: list,
                                   batch_size=batch_size,
                                   collate_fn=partial(collect_function, tokenizer=tokenizer),
                                   shuffle=True,
-                                  drop_last=True)
+                                  drop_last=False)
     eval_dataloader = DataLoader(dataset=eval_dataset,
                                  batch_size=batch_size,
                                  collate_fn=partial(collect_function, tokenizer=tokenizer),
                                  shuffle=True,
-                                 drop_last=True)
+                                 drop_last=False)
     return train_dataloader, eval_dataloader

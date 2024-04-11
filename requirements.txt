@@ -4,6 +4,7 @@ easydict==1.10
 evaluate==0.4.0
 objprint==0.2.2
 onnxruntime==1.15.1
+onnx==1.14.0
 optimum==1.9.1
 pandas==2.0.3
 PyYAML==6.0

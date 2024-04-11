@@ -7,21 +7,24 @@ Bert fine-tuning for Sentiment Analysis 基于Bert的情感分类模型微调
 
 训练前先安装必要环境pip install -r ，并更新配置文件 `config.yaml` 。其中Dataset可替换为自己的数据：分文件保存，lables与文件顺序对应。
 
-> PS：Model文件夹下的模型layer是之前写着玩的，可以直接删除
->
+> 配置文件中：
+> `describe` 参数指定了模型名称
+> `restore_train` 参数控制训练断点恢复
+> `save_all_epoch` 参数为True时，模型将在每次评估后保存一次模型。
+> 仅当上次训练save_all_epoch设为True时，本次才能启用断点恢复。若断点恢复被启用，模型将默认依据describe加载最新的模型，否则将依据describe迭代新的模型版本
 
 ### 训练
 
-DeepSpeed双卡加速训练：
+DeepSpeed多卡GPU加速训练：
 
 ```shell
-accelerate-launch --num_processes 2 trainer.py
+sh train.sh
 ```
 
 普通训练：
 
 ```shell
-python trainer.py
+python launch.py
 ```
 
 
@@ -34,9 +37,14 @@ python trainer.py
 
 ### 导出ONNX
 
-运行 `utils/generate_onnx.py` 脚本，生成的ONNX模型将保存在utils下的文件夹中
+运行 `gen_onnx.sh` 脚本，生成的ONNX模型将保存在配置文件中指定的文件夹
+
+若配置文件中 `onnx.describe` 未指定（指定时需携带版本编号），则默认指向 `describe` 的最新模型迭代
+
+当指定模型版本时（例：bert_v1），模型将加载指定版本
 
 ```
-python utils/generate_onnx.py
+sh gen_onnx.sh
 ```
 
+> PS：Model文件夹下的模型layer是之前写着玩的，可以直接删除
