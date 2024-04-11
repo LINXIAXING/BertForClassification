@@ -3,14 +3,20 @@ Bert fine-tuning for Sentiment Analysis 基于Bert的情感分类模型微调
 
 ### 简介
 
-基于Transformers库中BERT模型的情感三分类任务（消极、中性、积极），支持ONNX格式导出。
+基于Transformers库中BERT模型的情感三分类任务（消极、中性、积极），支持ONNX格式导出
 
-训练前先安装必要环境pip install -r ，并更新配置文件 `config.yaml` 。其中Dataset可替换为自己的数据：分文件保存，lables与文件顺序对应。
+训练前先安装必要环境pip install -r ，并更新配置文件 `config.yaml` 
+
+Dataset可替换为自己的数据：分文件保存，lables与文件顺序对应
 
 > 配置文件中：
+
 > `describe` 参数指定了模型名称
+
 > `restore_train` 参数控制训练断点恢复
+
 > `save_all_epoch` 参数为True时，模型将在每次评估后保存一次模型。
+
 > 仅当上次训练save_all_epoch设为True时，本次才能启用断点恢复。若断点恢复被启用，模型将默认依据describe加载最新的模型，否则将依据describe迭代新的模型版本
 
 ### 训练

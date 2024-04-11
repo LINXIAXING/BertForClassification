@@ -1,6 +1,6 @@
 .idea
 logs
-src/utils/save
+onnx/
 checkpoint
 pretrain_checkpoint
 *.pt

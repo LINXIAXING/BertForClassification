@@ -1,6 +1,4 @@
 import os
-import yaml
-from easydict import EasyDict
 from transformers import BertTokenizer
 from optimum.onnxruntime import ORTModelForSequenceClassification
 
